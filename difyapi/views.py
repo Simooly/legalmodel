@@ -17,14 +17,14 @@ DIFY_BASE_URL = "http://127.0.0.1/v1"
 
 # Dify 合同审查工作流配置
 DIFY_check_API_KEY = "app-Zv1BZsNrFKSp5aHBGIhid39S"
-DIFY_check_USER_ID = "abc-1234"
+# DIFY_check_USER_ID = "abc-1234"
 DIFY_check_WORKFLOW_ID = "ab1242-f0ba-4bf6-b86b-bbdf9a5d6c76"
 
 # 创建connectDify实例:
 dify_check_client = connectDify(
     api_key=DIFY_check_API_KEY,
     base_url=DIFY_BASE_URL,
-    user_id=DIFY_check_USER_ID,
+    # user_id=DIFY_check_USER_ID,
     workflow_id=DIFY_check_WORKFLOW_ID
 )
 
@@ -46,8 +46,8 @@ def generate_dify_response(file_path, apart, workfield, bizId):
     
     document_id = document_response["fileId"]
     
-    # Dify 工作流
-    dify_chatflow_response = dify_check_client.send_chat_message(
+    # Dify 合同审核工作流
+    dify_chatflow_response = dify_check_client.send_chat_message_to_check_contract(
             file_id = document_id,
             apart = apart,
             workfield = workfield,
@@ -96,15 +96,15 @@ def upload_document_review(request):
             apart = request.POST.get('apart', '')  # 甲方/乙方...
             workfield = request.POST.get('workfield', '')  # 领域
             bizId = request.POST.get('bizId', '')  # 业务ID
-            userID = request.POST.get('userID', '')  # 用户ID
+            # userID = request.POST.get('userID', '')  # 用户ID
             
             
 
             # 验证必填参数
-            if not all([apart, workfield, bizId, userID]):
+            if not all([apart, workfield, bizId]):
                 return JsonResponse({
                     'status': 'error',
-                    'message': '缺少必填参数:apart, workfield, bizId, userID'
+                    'message': '缺少必填参数:apart, workfield, bizId'
                 }, status=400)
             
             # 确保上传目录存在

@@ -5,18 +5,24 @@ import json
 
 
 class connectDify:
-    def __init__(self, api_key, base_url, user_id, workflow_id):
+    def __init__(self, api_key, base_url, workflow_id):
         self.api_key = api_key
         self.base_url = base_url
-        self.user_id = user_id
+        # self.user_id = user_id
         self.workflow_id = workflow_id
+        
+        # 定义请求头
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
 
     def upload_file(self, file_path):
-        """上传文件到Dify"""
+        """
+            上传文件到Dify
+            :param file_path: 文件路径
+            :return: 文件上传结果,包含文件ID或错误信息
+        """
         upload_url = f"{self.base_url}/files/upload"
         
         # 改进：自动识别常见的文档MIME类型,对于.docx等格式很重要
@@ -60,7 +66,7 @@ class connectDify:
         return upload_file_result
 
     
-    def send_chat_message(self, file_id, apart, workfield, bizId, contractServerIp="localhost", contractServerPort="1", query="审查", response_mode="streaming"):
+    def send_chat_message_to_check_contract(self, file_id, apart, workfield, bizId, contractServerIp="localhost", contractServerPort="1", query="审查", response_mode="streaming"):
         """
         发送对话消息到Dify工作流,并根据指定模式处理响应。
 
